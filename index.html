@@ -706,14 +706,14 @@ header {
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script>
   // Switch to 'production' when live
-  Paddle.Environment.set('sandbox');
-  Paddle.Initialize({ token: 'YOUR_PADDLE_CLIENT_TOKEN' });
+  Paddle.Environment.set('production');
+  Paddle.Initialize({ token: 'live_b6ca667b341d4b626d623beeed7' });
 
   // ── Paddle Price IDs — replace with real IDs from Paddle dashboard ──
   const PADDLE_PRICES = {
-    pro:      'pri_REPLACE_PRO',       // $9.99/mo
-    standard: 'pri_REPLACE_STANDARD',  // $5.99/mo
-    daypass:  'pri_REPLACE_DAYPASS'    // $1.99 one-time
+    pro:      'pri_01kmszmhjn5ny0hnjbfa18gcxt',       // $9.99/mo
+    standard: 'pri_01kmszvwkct89teyxk89g8eq61',  // $5.99/mo
+    daypass:  'pri_01kmszygvx61wyysgvqedxqf0y'    // $1.99 one-time
   };
 
   function paddleCheckout(plan) {
@@ -991,7 +991,7 @@ header {
           <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
           <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Priority processing</li>
         </ul>
-        <a href="#" onclick="paddleCheckout('pro');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:var(--orange);color:#000;border:none;text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.background='#ff8550'" onmouseout="this.style.background='var(--orange)'">Get Pro →</a>
+        <a href="#" onclick="paddleCheckout('pro');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:var(--orange);color:#000;border:1px solid transparent;text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.background='#ff8550'" onmouseout="this.style.background='var(--orange)'">Get Pro →</a>
       </div>
       <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
         <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Day Pass</div>
@@ -1044,7 +1044,7 @@ header {
         <a href="terms.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Terms</a>
         <a href="cookies.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Cookies</a>
         <a href="disclaimer.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Disclaimer</a>
-        <a href="mailto:hello@meshthis.com" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#721a171e1e1d321f17011a061a1b015c111d1f" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Contact</a>
       </div>
       <div style="font-size:0.62rem;color:var(--dim);">© 2026 MeshThis · Your files never leave your browser</div>
     </div>
@@ -1078,7 +1078,7 @@ header {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════════════════════════════
 // FREEMIUM
 // ═══════════════════════════════════════════════════════════════
@@ -1810,4 +1810,4 @@ document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
 <div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:999;font-size:12px;color:rgba(255,255,255,0.9);">
   <span>We use localStorage for your daily conversion counter. No tracking cookies. No ads. <a href="cookies.html" style="color:var(--orange);">Learn more</a></span>
-  <button onclick="localStorage.setItem('mt_consent','1');document.getElementById('cookie-banner').style.display='none';" style="background:var(--orange);color:#000;border:none;padding:7px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--mono);flex-shrink:0;">Got it</
+  <button onclick="localStorage.setItem('mt_consent','1');document.getElementById('cookie-banner').style.display='none';" style="background:var(--orange);col
