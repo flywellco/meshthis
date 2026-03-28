@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeshThis — Drop your scan. Mesh it. Print it.</title>
+<meta name="description" content="Turn your 3D scan into a print-ready file. Browser-based PLY · OBJ · STL converter with smart decimation. Zero uploads. 100% private.">
+<meta property="og:title" content="MeshThis — Drop your scan. Mesh it. Print it.">
+<meta property="og:description" content="Browser-based 3D scan converter. PLY, OBJ, STL → STL, OBJ, 3MF. Smart decimation. Zero uploads. 100% in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://meshthis.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ff6b2b">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #060810;
+  --s1:      #0a0d16;
+  --s2:      #0e1220;
+  --border:  #1a2235;
+  --border2: #212d42;
+  --orange:  #ff6b2b;
+  --amber:   #ffb547;
+  --cyan:    #00d4ff;
+  --green:   #00ff9d;
+  --red:     #ff3a3a;
+  --text:    #f0f4ff;
+  --muted:   #a8b4c8;
+  --dim:     #6b7a94;
+  --mono:    'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,43,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,43,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,107,43,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 80px 24px 100px;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  background: rgba(6,8,16,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,107,43,0.08);
+  gap: 16px;
+}
+
+.logo {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.logo em { color: var(--orange); font-style: normal; }
+.logo a { text-decoration: none; color: inherit; }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usage-pill {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+  background: var(--s1);
+  cursor: default;
+}
+.usage-pill.warn { border-color: rgba(255,181,71,0.4); color: var(--amber); }
+.usage-pill.full { border-color: rgba(255,58,58,0.4); color: var(--red); }
+
+.btn-upgrade {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-upgrade:hover { background: var(--orange); color: #000; }
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── Decimate control ────────────────────────────────────────── */
+.decimate-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+
+.decimate-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.decimate-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  outline: none;
+}
+
+.decimate-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--orange);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+
+.decimate-value {
+  font-size: 0.7rem;
+  color: var(--orange);
+  min-width: 80px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Drop Zone ──────────────────────────────────────────────── */
+.dropzone {
+  border: 1.5px dashed var(--border2);
+  border-radius: 20px;
+  background: var(--s1);
+  padding: 56px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.dropzone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,107,43,0.06) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dropzone:hover, .dropzone.over {
+  border-color: var(--orange);
+  background: rgba(255,107,43,0.03);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 60px rgba(255,107,43,0.06);
+}
+
+.dropzone:hover::before, .dropzone.over::before { opacity: 1; }
+.dropzone.over { border-style: solid; box-shadow: 0 0 0 1px rgba(255,107,43,0.2), 0 20px 60px rgba(255,107,43,0.1); }
+
+.drop-icon {
+  width: 48px; height: 48px;
+  margin: 0 auto 18px;
+  color: var(--orange);
+  opacity: 0.6;
+}
+
+.drop-title {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.drop-hint {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.format-badges {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fmt {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.fmt.ply  { border-color: rgba(255,107,43,0.5); color: var(--orange); }
+.fmt.obj  { border-color: rgba(255,107,43,0.3); color: rgba(255,107,43,0.7); }
+.fmt.stl  { border-color: rgba(255,107,43,0.2); color: rgba(255,107,43,0.5); }
+
+#fileInput { display: none; }
+
+/* ── Main Grid ──────────────────────────────────────────────── */
+.main-grid {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.main-grid.visible { display: flex; }
+
+/* ── Panels ─────────────────────────────────────────────────── */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.output-panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.output-title {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.output-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.out-btn {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--s2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.out-btn:hover:not(:disabled) {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(255,107,43,0.04);
+}
+
+.out-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.out-btn .out-badge {
+  font-size: 0.55rem;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(255,107,43,0.1);
+  color: var(--orange);
+  border: 1px solid rgba(255,107,43,0.2);
+}
+
+/* Progress */
+.progress-panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.progress-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--orange), var(--amber));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.progress-fill.indeterminate {
+  width: 35%;
+  animation: indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(380%); }
+}
+
+.progress-status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text);
+  min-height: 20px;
+}
+
+/* Log */
+.log-panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.log-body {
+  padding: 14px 16px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.68rem;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+.log-body::-webkit-scrollbar { width: 3px; }
+.log-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+.log-line { color: var(--muted); }
+.log-line::before { content: '› '; opacity: 0.6; }
+.log-line.info    { color: var(--text); }
+.log-line.success { color: var(--green); }
+.log-line.warn    { color: var(--amber); }
+.log-line.error   { color: var(--red); }
+
+/* Buttons */
+.btn-download {
+  display: none;
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--orange);
+  color: #000;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-download.visible { display: flex; }
+.btn-download:hover { background: #ff8550; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,107,43,0.3); }
+
+.btn-reset {
+  display: none;
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 6px;
+}
+.btn-reset.visible { display: block; }
+.btn-reset:hover { border-color: var(--muted); color: var(--muted); }
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* Mesh Health */
+.health-panel {
+  display: none;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.health-panel.visible { display: block; }
+.health-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.health-title {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.health-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.health-badge.pass { background: rgba(0,255,157,0.1); color: var(--green); border: 1px solid rgba(0,255,157,0.25); }
+.health-badge.warn { background: rgba(255,181,71,0.1); color: var(--amber); border: 1px solid rgba(255,181,71,0.25); }
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.health-stat { background: var(--s1); padding: 12px 14px; }
+.health-stat-label { font-size: 0.58rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.health-stat-value { font-size: 0.8rem; font-weight: 500; color: var(--text); }
+.health-stat-value.good { color: var(--green); }
+.health-stat-value.warn { color: var(--amber); }
+.health-stat-value.info { color: var(--orange); }
+
+/* Decimate banner */
+.decimate-banner {
+  display: none;
+  background: rgba(255,107,43,0.06);
+  border: 1px solid rgba(255,107,43,0.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.68rem;
+  color: var(--orange);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.decimate-banner.visible { display: block; }
+.decimate-banner strong { display: block; margin-bottom: 4px; font-size: 0.7rem; }
+
+/* Privacy bar */
+.privacy-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  background: var(--s1);
+}
+.privacy-bar svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+/* Paywall */
+.paywall {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(6,8,16,0.94);
+  backdrop-filter: blur(12px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.paywall.visible { display: flex; }
+
+.paywall-box {
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 44px 40px;
+  max-width: 440px;
+  width: 92%;
+  text-align: center;
+  box-shadow: 0 0 100px rgba(255,107,43,0.1);
+}
+
+.paywall-icon { font-size: 2.8rem; margin-bottom: 16px; }
+.paywall-title {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.paywall-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.paywall-desc strong { color: var(--orange); }
+
+.paywall-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.plan-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 13px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.plan-btn.primary { background: var(--orange); color: #000; }
+.plan-btn.primary:hover { background: #ff8550; }
+.plan-btn.secondary { background: var(--s2); color: var(--muted); border: 1px solid var(--border2); }
+.plan-btn.secondary:hover { border-color: var(--muted); color: var(--text); }
+.plan-price { font-weight: 700; }
+
+.paywall-skip {
+  font-size: 0.62rem;
+  color: var(--dim);
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-family: var(--mono);
+}
+.paywall-skip:hover { color: var(--muted); }
+
+/* Limit banner */
+.limit-banner {
+  display: none;
+  background: rgba(255,58,58,0.06);
+  border: 1px solid rgba(255,58,58,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.68rem;
+  color: var(--red);
+  line-height: 1.6;
+  margin-top: 12px;
+  text-align: center;
+}
+.limit-banner.visible { display: block; }
+
+/* Footer cards */
+.footer-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 48px;
+}
+.fcard {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.fcard-title {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.fcard p { font-size: 0.7rem; color: var(--dim); line-height: 1.6; }
+</style>
+<!-- Plausible Analytics — uncomment when domain is live -->
+<!-- <script defer data-domain="meshthis.com" src="https://plausible.io/js/script.js"></script> -->
+
+<!-- Paddle.js -->
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script>
+  // Switch to 'production' when live
+  Paddle.Environment.set('sandbox');
+  Paddle.Initialize({ token: 'YOUR_PADDLE_CLIENT_TOKEN' });
+
+  // ── Paddle Price IDs — replace with real IDs from Paddle dashboard ──
+  const PADDLE_PRICES = {
+    pro:      'pri_REPLACE_PRO',       // $9.99/mo
+    standard: 'pri_REPLACE_STANDARD',  // $5.99/mo
+    daypass:  'pri_REPLACE_DAYPASS'    // $1.99 one-time
+  };
+
+  function paddleCheckout(plan) {
+    Paddle.Checkout.open({
+      items: [{ priceId: PADDLE_PRICES[plan], quantity: 1 }],
+      successCallback: function(data) {
+        // Honor-system unlock — set plan in localStorage after payment
+        const expiry = plan === 'daypass'
+          ? Date.now() + 24*60*60*1000
+          : Date.now() + 30*24*60*60*1000;
+        localStorage.setItem('mt_plan', plan);
+        localStorage.setItem('mt_plan_expiry', expiry);
+        closePaywall();
+        location.reload(); // reload so isProUser picks up new plan
+      }
+    });
+  }
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo"><a href="/">Mesh<em>This</em></a></div>
+    <div class="header-right">
+      <nav style="display:flex;gap:24px;align-items:center;margin-right:16px;">
+        <a href="#how" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--dim)'">How it works</a>
+        <a href="#pricing" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--dim)'">Pricing</a>
+      </nav>
+      <div class="usage-pill" id="usagePill">3 conversions left</div>
+      <button class="btn-upgrade" onclick="showPaywall('upgrade')">Go Pro</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1 class="hero-title">Turn your 3D scan<br><span>into something real.</span></h1>
+    <p class="hero-sub">Drop your scan. Mesh it. Print it. &nbsp;·&nbsp; PLY · OBJ · STL → STL · OBJ · 3MF &nbsp;·&nbsp; 100% in your browser</p>
+  </div>
+
+  <!-- Decimate control -->
+  <div class="decimate-bar">
+    <span class="decimate-label">Triangle budget</span>
+    <input type="range" class="decimate-slider" id="decimateSlider" min="50000" max="800000" step="50000" value="300000">
+    <span class="decimate-value" id="decimateValue">300k triangles</span>
+  </div>
+
+  <!-- Drop Zone -->
+  <div class="dropzone" id="dropzone">
+    <input type="file" id="fileInput" accept=".ply,.obj,.stl">
+    <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <div class="drop-title">Drop your scan file here</div>
+    <div class="drop-hint">Polycam · Scaniverse · iPhone LiDAR · any PLY or OBJ export</div>
+    <div class="format-badges">
+      <span class="fmt ply">PLY</span>
+      <span class="fmt obj">OBJ</span>
+      <span class="fmt stl">STL</span>
+    </div>
+  </div>
+
+  <div class="limit-banner" id="limitBanner">
+    Daily limit reached. <strong>Upgrade to Pro</strong> for unlimited conversions.
+    <br><button style="margin-top:8px;font-family:var(--mono);font-size:0.65rem;padding:6px 14px;border-radius:5px;border:1px solid var(--red);background:transparent;color:var(--red);cursor:pointer;" onclick="showPaywall('limit')">View Plans</button>
+  </div>
+
+  <div class="main-grid" id="mainGrid">
+
+    <div class="decimate-banner" id="decimateBanner">
+      <strong>⚡ Smart Decimation Active</strong>
+      <span id="decimateInfo">Large scan detected. Downsampling to fit triangle budget.</span>
+    </div>
+
+    <div class="output-panel">
+      <div class="output-title">Convert to</div>
+      <div class="output-btns">
+        <button class="out-btn" id="btnToSTL" disabled>
+          <span>STL &nbsp;<span style="color:var(--dim);font-size:0.6rem;">Universal · every slicer</span></span>
+          <span class="out-badge">FREE</span>
+        </button>
+        <button class="out-btn" id="btnToOBJ" disabled>
+          <span>OBJ &nbsp;<span style="color:var(--dim);font-size:0.6rem;">With normals · Blender ready</span></span>
+          <span class="out-badge">FREE</span>
+        </button>
+        <button class="out-btn" id="btn3MF" disabled>
+          <span>3MF &nbsp;<span style="color:var(--dim);font-size:0.6rem;">Bambu · Prusa · modern</span></span>
+          <span class="out-badge">FREE</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-title">
+        <span id="progressLabel">Status</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-status" id="progressStatus">Ready — select output format above</div>
+    </div>
+
+    <button class="btn-download" id="btnDownload">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span id="btnDownloadLabel">Download File</span>
+    </button>
+
+    <button class="btn-reset" id="btnReset">← Convert another file</button>
+
+    <!-- Mesh Health -->
+    <div class="health-panel" id="healthPanel">
+      <div class="health-header">
+        <span class="health-title">🩺 Mesh Health</span>
+        <span class="health-badge" id="healthBadge">—</span>
+      </div>
+      <div class="health-grid">
+        <div class="health-stat">
+          <div class="health-stat-label">Watertight</div>
+          <div class="health-stat-value" id="healthWatertight">—</div>
+        </div>
+        <div class="health-stat">
+          <div class="health-stat-label">Triangles</div>
+          <div class="health-stat-value info" id="healthTris">—</div>
+        </div>
+        <div class="health-stat">
+          <div class="health-stat-label">Dimensions (mm)</div>
+          <div class="health-stat-value info" id="healthDims">—</div>
+        </div>
+        <div class="health-stat">
+          <div class="health-stat-label">Volume (cm³)</div>
+          <div class="health-stat-value info" id="healthVol">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="log-panel">
+      <div class="panel-header">
+        <span class="panel-label">Console</span>
+        <span style="font-size:0.58rem;color:var(--dim);cursor:pointer;" id="btnClearLog">clear</span>
+      </div>
+      <div class="log-body" id="logBody"></div>
+    </div>
+
+  </div>
+
+  <div class="privacy-bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    Your scan files never leave your browser · All processing is local · Zero uploads
+  </div>
+
+  <div class="footer-info">
+    <div class="fcard">
+      <div class="fcard-title">Smart Decimation</div>
+      <p>Large scans are downsampled to your triangle budget. Slicers don't need 2M triangles anyway.</p>
+    </div>
+    <div class="fcard">
+      <div class="fcard-title">100% Private</div>
+      <p>All processing runs locally via WebAssembly. Your scan data never touches a server.</p>
+    </div>
+    <div class="fcard">
+      <div class="fcard-title">Pro Features</div>
+      <p>Unlimited conversions, up to 200MB, full triangle budget control. $9.99/mo Pro or $5.99/mo Standard.</p>
+    </div>
+  </div>
+
+
+
+  <!-- ── How it works ─────────────────────────────────────── -->
+  <section style="padding:80px 0 60px;" id="how">
+    <div class="fade-up">
+      <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">How it works</p>
+      <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Three steps.<br>One printable file.</h2>
+      <p style="font-size:0.8rem;color:var(--muted);line-height:1.8;max-width:480px;">No MeshLab. No CloudCompare. No PhD. Just drop your scan and go.</p>
+    </div>
+    <div class="fade-up" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+      <div style="background:var(--s1);padding:36px 28px;">
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">01</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">📱</div>
+        <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Scan anything</div>
+        <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Use the LiDAR scanner in your iPhone Pro or iPad Pro. Any scanning app works — export the mesh file when done.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Polycam</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Scaniverse</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">RealityScan</span></div>
+      </div>
+      <div style="background:var(--s1);padding:36px 28px;">
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">02</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">⬆</div>
+        <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Drop the file</div>
+        <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Drag your PLY, OBJ, or STL onto MeshThis above. Smart decimation trims millions of triangles to what your printer actually needs.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.ply</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.obj</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.stl</span></div>
+      </div>
+      <div style="background:var(--s1);padding:36px 28px;">
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">03</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">🖨</div>
+        <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Print it</div>
+        <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Download a clean, slicer-ready STL or 3MF. Open straight in Bambu Studio, PrusaSlicer, or Cura and hit print.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Bambu Studio</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">PrusaSlicer</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Cura</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Formats ───────────────────────────────────────────── -->
+  <section style="padding:60px 0;" id="formats">
+    <div class="fade-up">
+      <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Supported formats</p>
+      <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Works with every<br>scan app export.</h2>
+    </div>
+    <div class="fade-up" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+      <div style="background:var(--s1);padding:36px;">
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);margin-bottom:24px;">Input — your scan files</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">PLY</span><span style="font-size:0.68rem;color:var(--muted);">Polycam, Scaniverse, iPhone LiDAR · ASCII & Binary</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">OBJ</span><span style="font-size:0.68rem;color:var(--muted);">Universal mesh · exported by most scan apps</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">STL</span><span style="font-size:0.68rem;color:var(--muted);">Already STL? We clean and decimate it for printing</span></div>
+        </div>
+      </div>
+      <div style="background:var(--s1);padding:36px;">
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);margin-bottom:24px;">Output — print-ready files</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">STL</span><span style="font-size:0.68rem;color:var(--muted);">Universal · works with every slicer on the planet</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">3MF</span><span style="font-size:0.68rem;color:var(--muted);">Modern · preferred by Bambu Studio & PrusaSlicer</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">OBJ</span><span style="font-size:0.68rem;color:var(--muted);">With normals · for editing in Blender or Meshmixer</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ───────────────────────────────────────────── -->
+  <section style="padding:60px 0;" id="pricing">
+    <div class="fade-up">
+      <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Pricing</p>
+      <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Start free.<br>Go pro when you need it.</h2>
+    </div>
+    <div class="fade-up" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;">
+      <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Free</div>
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>0</div>
+        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">Try it out. No account needed.</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>3 conversions per day</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 30MB</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
+        </ul>
+        <a href="#dropzone" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Start free →</a>
+      </div>
+      <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Standard</div>
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>5<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99/mo</sub></div>
+        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">For regular makers and hobbyists.</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>10 conversions per day</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 80MB</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
+        </ul>
+        <a href="#" onclick="paddleCheckout('standard');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Get Standard →</a>
+      </div>
+      <div style="background:linear-gradient(160deg,rgba(255,107,43,0.06) 0%,var(--s1) 60%);border:1px solid rgba(255,107,43,0.5);border-radius:20px;padding:28px 22px;position:relative;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:99px;background:var(--orange);color:#000;font-weight:500;white-space:nowrap;">Most popular</div>
+        <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Pro</div>
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>9<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99/mo</sub></div>
+        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">For serious makers and scan enthusiasts.</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited conversions</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Priority processing</li>
+        </ul>
+        <a href="#" onclick="paddleCheckout('pro');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:var(--orange);color:#000;border:none;text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.background='#ff8550'" onmouseout="this.style.background='var(--orange)'">Get Pro →</a>
+      </div>
+      <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Day Pass</div>
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>1<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99</sub></div>
+        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">Unlimited access for 24 hours.</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited for 24 hours</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>No recurring charge</li>
+        </ul>
+        <a href="#" onclick="paddleCheckout('daypass');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Buy day pass →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why browser-based ─────────────────────────────────── -->
+  <section style="padding:60px 0;">
+    <div class="fade-up">
+      <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Why browser-based</p>
+      <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Your scans stay<br>on your device.</h2>
+    </div>
+    <div class="fade-up" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+      <div style="background:var(--s1);padding:32px;display:flex;gap:18px;">
+        <div style="width:40px;height:40px;flex-shrink:0;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🔒</div>
+        <div><div style="font-family:var(--display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">Zero uploads</div><div style="font-size:0.68rem;color:var(--muted);line-height:1.7;">Your scan files never leave your machine. Everything processes via WebAssembly inside your browser tab. No cloud, no server, no data retention.</div></div>
+      </div>
+      <div style="background:var(--s1);padding:32px;display:flex;gap:18px;">
+        <div style="width:40px;height:40px;flex-shrink:0;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">⚡</div>
+        <div><div style="font-family:var(--display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">Instant processing</div><div style="font-size:0.68rem;color:var(--muted);line-height:1.7;">No queue. No server spin-up. Your CPU does the work locally. Most scans convert in under 10 seconds.</div></div>
+      </div>
+      <div style="background:var(--s1);padding:32px;display:flex;gap:18px;">
+        <div style="width:40px;height:40px;flex-shrink:0;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">📦</div>
+        <div><div style="font-family:var(--display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">No install needed</div><div style="font-size:0.68rem;color:var(--muted);line-height:1.7;">Forget MeshLab. Open a URL, drop your file, get your STL. Works on Mac, Windows, Linux — any browser.</div></div>
+      </div>
+      <div style="background:var(--s1);padding:32px;display:flex;gap:18px;">
+        <div style="width:40px;height:40px;flex-shrink:0;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🎯</div>
+        <div><div style="font-family:var(--display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">Built for printing</div><div style="font-size:0.68rem;color:var(--muted);line-height:1.7;">Smart decimation caps triangle count at what slicers actually need. Mesh health check flags open edges before you waste a print.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer style="border-top:1px solid var(--border);padding:32px 0;margin-top:40px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="font-family:var(--display);font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-0.03em;">Mesh<em style="color:var(--orange);font-style:normal;">This</em></div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <a href="privacy.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Privacy</a>
+        <a href="terms.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Terms</a>
+        <a href="cookies.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Cookies</a>
+        <a href="disclaimer.html" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Disclaimer</a>
+        <a href="mailto:hello@meshthis.com" style="font-size:0.62rem;letter-spacing:0.08em;color:var(--dim);text-decoration:none;">Contact</a>
+      </div>
+      <div style="font-size:0.62rem;color:var(--dim);">© 2026 MeshThis · Your files never leave your browser</div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Paywall -->
+<div class="paywall" id="paywall">
+  <div class="paywall-box">
+    <div class="paywall-icon">🖨</div>
+    <div class="paywall-title" id="paywallTitle">Upgrade MeshThis</div>
+    <div class="paywall-desc" id="paywallDesc">
+      Unlock <strong>unlimited conversions</strong>, larger files,<br>and full triangle budget control.
+    </div>
+    <div class="paywall-plans">
+      <button class="plan-btn primary" onclick="paddleCheckout('pro')">
+        <span>Pro — Unlimited + 200MB files</span>
+        <span class="plan-price">$9.99/mo</span>
+      </button>
+      <button class="plan-btn secondary" onclick="paddleCheckout('standard')">
+        <span>Standard — 10/day + 80MB files</span>
+        <span class="plan-price">$5.99/mo</span>
+      </button>
+      <button class="plan-btn secondary" onclick="paddleCheckout('daypass')">
+        <span>Day Pass — Unlimited 24hrs</span>
+        <span class="plan-price">$1.99</span>
+      </button>
+    </div>
+    <button class="paywall-skip" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// FREEMIUM
+// ═══════════════════════════════════════════════════════════════
+const FREE_LIMIT = 3;
+// Check if user has a valid paid plan in localStorage (set by Paddle success callback)
+function checkProStatus() {
+  const plan = localStorage.getItem('mt_plan');
+  const expiry = parseInt(localStorage.getItem('mt_plan_expiry') || '0');
+  if (!plan || Date.now() > expiry) {
+    localStorage.removeItem('mt_plan');
+    localStorage.removeItem('mt_plan_expiry');
+    return false;
+  }
+  return true;
+}
+const isProUser = checkProStatus();
+
+function getUsage() {
+  const today = new Date().toDateString();
+  const stored = JSON.parse(localStorage.getItem('mt_usage') || '{}');
+  if (stored.date !== today) return { date: today, count: 0 };
+  return stored;
+}
+function incrementUsage() {
+  const u = getUsage(); u.count++;
+  localStorage.setItem('mt_usage', JSON.stringify(u));
+  updateUsagePill();
+}
+function canConvert() {
+  if (isProUser) return true;
+  return getUsage().count < FREE_LIMIT;
+}
+function updateUsagePill() {
+  const pill = document.getElementById('usagePill');
+  if (isProUser) { pill.textContent = 'Pro · Unlimited'; pill.className = 'usage-pill'; return; }
+  const u = getUsage();
+  const left = Math.max(0, FREE_LIMIT - u.count);
+  pill.textContent = left + ' conversion' + (left !== 1 ? 's' : '') + ' left today';
+  pill.className = 'usage-pill' + (left <= 0 ? ' full' : left <= 1 ? ' warn' : '');
+}
+updateUsagePill();
+
+// ═══════════════════════════════════════════════════════════════
+// DECIMATE SLIDER
+// ═══════════════════════════════════════════════════════════════
+const decimateSlider = document.getElementById('decimateSlider');
+const decimateValue  = document.getElementById('decimateValue');
+
+decimateSlider.addEventListener('input', () => {
+  const v = parseInt(decimateSlider.value);
+  decimateValue.textContent = v >= 1000000 ? (v/1000000).toFixed(1) + 'M triangles' : Math.round(v/1000) + 'k triangles';
+});
+
+function getTriBudget() { return parseInt(decimateSlider.value); }
+
+// ═══════════════════════════════════════════════════════════════
+// WORKER
+// ═══════════════════════════════════════════════════════════════
+const WORKER_SRC = `
+function fmtBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+function post(type, data, transfer) {
+  if (transfer) self.postMessage({ type, ...data }, transfer);
+  else self.postMessage({ type, ...data });
+}
+
+function detectFormat(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  return { ply:'PLY', obj:'OBJ', stl:'STL' }[ext] || 'UNKNOWN';
+}
+
+// ── PLY Parser with smart decimation ─────────────────────────
+function parsePLY(buffer, triBudget) {
+  const headerBytes = new Uint8Array(buffer, 0, Math.min(8192, buffer.byteLength));
+  const headerText = new TextDecoder().decode(headerBytes);
+  if (!headerText.startsWith('ply')) throw new Error('Not a valid PLY file');
+
+  const lines = headerText.split('\\n');
+  let isBinary = false, isBigEndian = false;
+  let vertexCount = 0, faceCount = 0;
+  let headerEndLine = 0;
+  const vertProps = [];
+  let inVertexEl = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith('format binary_big_endian'))    { isBinary = true; isBigEndian = true; }
+    else if (line.startsWith('format binary_little_endian')) { isBinary = true; }
+    else if (line.startsWith('element vertex'))  { vertexCount = parseInt(line.split(' ')[2]); inVertexEl = true; }
+    else if (line.startsWith('element face'))    { faceCount   = parseInt(line.split(' ')[2]); inVertexEl = false; }
+    else if (line.startsWith('element'))         { inVertexEl = false; }
+    else if (line.startsWith('property') && inVertexEl) {
+      const parts = line.split(' ');
+      vertProps.push({ name: parts[parts.length-1], type: parts[1] });
+    }
+    if (line === 'end_header') { headerEndLine = i; break; }
+  }
+
+  post('log', { level: 'info', msg: 'PLY: ' + vertexCount.toLocaleString() + ' vertices, ' + faceCount.toLocaleString() + ' faces, ' + (isBinary ? 'binary' : 'ASCII') });
+
+  // Calculate decimation stride
+  // For face-based: stride = skip every Nth face
+  // For vertex-only clouds: grid subsample
+  let faceStride = 1;
+  if (faceCount > 0 && faceCount > triBudget) {
+    faceStride = Math.ceil(faceCount / triBudget);
+    post('log', { level: 'warn', msg: 'Decimating: keeping 1 in ' + faceStride + ' faces → ~' + Math.round(faceCount/faceStride).toLocaleString() + ' triangles' });
+    post('decimated', { original: faceCount, target: Math.round(faceCount/faceStride) });
+  } else if (faceCount === 0) {
+    // Point cloud — build triangles from vertices using stride
+    const pointBudget = triBudget * 2;
+    if (vertexCount > pointBudget) {
+      faceStride = Math.ceil(vertexCount / pointBudget);
+      post('log', { level: 'warn', msg: 'Point cloud: keeping 1 in ' + faceStride + ' points' });
+    }
+  }
+
+  const typeSize = { char:1,uchar:1,short:2,ushort:2,int:4,uint:4,float:4,double:8,
+                     int8:1,uint8:1,int16:2,uint16:2,int32:4,uint32:4,float32:4,float64:8 };
+
+  const xi  = vertProps.findIndex(p => p.name === 'x');
+  const yi  = vertProps.findIndex(p => p.name === 'y');
+  const zi  = vertProps.findIndex(p => p.name === 'z');
+  const nxi = vertProps.findIndex(p => p.name === 'nx');
+  const nyi = vertProps.findIndex(p => p.name === 'ny');
+  const nzi = vertProps.findIndex(p => p.name === 'nz');
+  const hasNormals = nxi >= 0;
+
+  if (isBinary) {
+    return parsePLYBinary(buffer, vertexCount, faceCount, vertProps, xi, yi, zi, nxi, nyi, nzi,
+                          hasNormals, typeSize, isBigEndian, faceStride, headerEndLine, lines);
+  } else {
+    return parsePLYAscii(buffer, vertexCount, faceCount, xi, yi, zi, nxi, nyi, nzi,
+                         hasNormals, faceStride, headerEndLine);
+  }
+}
+
+function calcHeaderEnd(lines, headerEndLine) {
+  const enc = new TextEncoder();
+  let off = 0;
+  for (let i = 0; i <= headerEndLine; i++) off += enc.encode(lines[i] + '\\n').length;
+  return off;
+}
+
+function parsePLYBinary(buffer, vertexCount, faceCount, vertProps, xi, yi, zi, nxi, nyi, nzi,
+                         hasNormals, typeSize, isBigEndian, faceStride, headerEndLine, lines) {
+  const headerEnd = calcHeaderEnd(lines, headerEndLine);
+  const vertStride = vertProps.reduce((s, p) => s + (typeSize[p.type] || 4), 0);
+  const view = new DataView(buffer);
+  const le = !isBigEndian;
+
+  // Read ALL vertices first (we need them for face index lookup)
+  const allPositions = new Float32Array(vertexCount * 3);
+  const allNormals   = new Float32Array(vertexCount * 3);
+
+  let off = headerEnd;
+  for (let v = 0; v < vertexCount; v++) {
+    let propOff = off;
+    for (let p = 0; p < vertProps.length; p++) {
+      const sz = typeSize[vertProps[p].type] || 4;
+      if (p === xi)  allPositions[v*3]   = view.getFloat32(propOff, le);
+      if (p === yi)  allPositions[v*3+1] = view.getFloat32(propOff, le);
+      if (p === zi)  allPositions[v*3+2] = view.getFloat32(propOff, le);
+      if (hasNormals) {
+        if (p === nxi) allNormals[v*3]   = view.getFloat32(propOff, le);
+        if (p === nyi) allNormals[v*3+1] = view.getFloat32(propOff, le);
+        if (p === nzi) allNormals[v*3+2] = view.getFloat32(propOff, le);
+      }
+      propOff += sz;
+    }
+    off += vertStride;
+  }
+
+  post('progress', { value: 55, indet: false });
+
+  if (faceCount > 0) {
+    // Read faces with stride decimation
+    const indices = [];
+    for (let f = 0; f < faceCount; f++) {
+      const count = view.getUint8(off); off++;
+      const verts = [];
+      for (let v = 0; v < count; v++) { verts.push(view.getUint32(off, le)); off += 4; }
+      if (f % faceStride === 0) {
+        for (let v = 1; v < count - 1; v++) indices.push(verts[0], verts[v], verts[v+1]);
+      }
+    }
+    return { positions: allPositions, normals: allNormals, indices: new Uint32Array(indices) };
+  } else {
+    // Point cloud — build simple mesh from decimated points
+    return buildPointMesh(allPositions, allNormals, faceStride);
+  }
+}
+
+function parsePLYAscii(buffer, vertexCount, faceCount, xi, yi, zi, nxi, nyi, nzi,
+                        hasNormals, faceStride, headerEndLine) {
+  const fullText = new TextDecoder().decode(buffer);
+  const allLines = fullText.split('\\n');
+  const dataStart = headerEndLine + 1;
+
+  const allPositions = new Float32Array(vertexCount * 3);
+  const allNormals   = new Float32Array(vertexCount * 3);
+
+  for (let v = 0; v < vertexCount; v++) {
+    const line = allLines[dataStart + v];
+    if (!line) continue;
+    const parts = line.trim().split(/\\s+/);
+    allPositions[v*3]   = parseFloat(parts[xi]) || 0;
+    allPositions[v*3+1] = parseFloat(parts[yi]) || 0;
+    allPositions[v*3+2] = parseFloat(parts[zi]) || 0;
+    if (hasNormals) {
+      allNormals[v*3]   = parseFloat(parts[nxi]) || 0;
+      allNormals[v*3+1] = parseFloat(parts[nyi]) || 0;
+      allNormals[v*3+2] = parseFloat(parts[nzi]) || 0;
+    }
+    if (v % 100000 === 0) post('progress', { value: 20 + Math.round(v / vertexCount * 35), indet: false });
+  }
+
+  post('progress', { value: 55, indet: false });
+
+  if (faceCount > 0) {
+    const indices = [];
+    for (let f = 0; f < faceCount; f++) {
+      const line = allLines[dataStart + vertexCount + f];
+      if (!line) continue;
+      const parts = line.trim().split(/\\s+/).map(Number);
+      const count = parts[0];
+      if (f % faceStride === 0) {
+        for (let v = 1; v < count - 1; v++) indices.push(parts[1], parts[1+v], parts[1+v+1]);
+      }
+    }
+    return { positions: allPositions, normals: allNormals, indices: new Uint32Array(indices) };
+  } else {
+    return buildPointMesh(allPositions, allNormals, faceStride);
+  }
+}
+
+// Build a simple mesh from a point cloud (no topology — just point sprites as degenerate triangles)
+function buildPointMesh(positions, normals, stride) {
+  const count = Math.floor(positions.length / 3);
+  const outPos = [];
+  const outNorm = [];
+  const outIdx = [];
+  let idx = 0;
+
+  for (let i = 0; i < count; i += stride) {
+    const x = positions[i*3], y = positions[i*3+1], z = positions[i*3+2];
+    const nx = normals[i*3] || 0, ny = normals[i*3+1] || 0, nz = normals[i*3+2] || 1;
+    const s = 0.5; // tiny point size
+    outPos.push(x-s, y, z, x+s, y, z, x, y+s, z);
+    outNorm.push(nx, ny, nz, nx, ny, nz, nx, ny, nz);
+    outIdx.push(idx, idx+1, idx+2);
+    idx += 3;
+  }
+  return {
+    positions: new Float32Array(outPos),
+    normals: new Float32Array(outNorm),
+    indices: new Uint32Array(outIdx)
+  };
+}
+
+// ── OBJ Parser ─────────────────────────────────────────────────
+function parseOBJ(buffer, triBudget) {
+  const text = new TextDecoder().decode(buffer);
+  const lines = text.split('\\n');
+  const verts = [], norms = [];
+  const positions = [], normals = [], indices = [];
+  let idx = 0;
+  let faceCount = 0;
+
+  // Count faces first for stride
+  let totalFaces = 0;
+  for (const line of lines) {
+    if (line.trimStart().startsWith('f ')) totalFaces++;
+  }
+  const faceStride = totalFaces > triBudget ? Math.ceil(totalFaces / triBudget) : 1;
+  if (faceStride > 1) post('log', { level: 'warn', msg: 'OBJ decimating: 1 in ' + faceStride + ' faces' });
+
+  for (const line of lines) {
+    const parts = line.trim().split(/\\s+/);
+    if (parts[0] === 'v')  verts.push(+parts[1], +parts[2], +parts[3]);
+    else if (parts[0] === 'vn') norms.push(+parts[1], +parts[2], +parts[3]);
+    else if (parts[0] === 'f') {
+      faceCount++;
+      if (faceCount % faceStride !== 0) continue;
+      const face = parts.slice(1).map(p => {
+        const s = p.split('/');
+        return { v: (+s[0]-1)*3, n: s[2] ? (+s[2]-1)*3 : -1 };
+      });
+      for (let i = 1; i < face.length - 1; i++) {
+        for (const fi of [face[0], face[i], face[i+1]]) {
+          positions.push(verts[fi.v], verts[fi.v+1], verts[fi.v+2]);
+          if (fi.n >= 0) normals.push(norms[fi.n], norms[fi.n+1], norms[fi.n+2]);
+          else normals.push(0, 1, 0);
+          indices.push(idx++);
+        }
+      }
+    }
+  }
+  return { positions: new Float32Array(positions), normals: new Float32Array(normals), indices: new Uint32Array(indices) };
+}
+
+// ── STL Parser ─────────────────────────────────────────────────
+function parseSTL(buffer, triBudget) {
+  const view = new DataView(buffer);
+  const text = new TextDecoder().decode(new Uint8Array(buffer, 0, Math.min(256, buffer.byteLength)));
+  const isASCII = text.trimStart().toLowerCase().startsWith('solid') && text.includes('facet');
+
+  let positions = [], normals = [], indices = [];
+
+  if (!isASCII) {
+    const triCount = view.getUint32(80, true);
+    const stride = triCount > triBudget ? Math.ceil(triCount / triBudget) : 1;
+    if (stride > 1) post('log', { level: 'warn', msg: 'STL decimating: 1 in ' + stride + ' triangles' });
+    let outIdx = 0;
+    for (let i = 0; i < triCount; i++) {
+      if (i % stride !== 0) continue;
+      const off = 84 + i * 50;
+      const nx = view.getFloat32(off, true), ny = view.getFloat32(off+4, true), nz = view.getFloat32(off+8, true);
+      for (let v = 0; v < 3; v++) {
+        const vo = off + 12 + v * 12;
+        positions.push(view.getFloat32(vo,true), view.getFloat32(vo+4,true), view.getFloat32(vo+8,true));
+        normals.push(nx, ny, nz);
+        indices.push(outIdx++);
+      }
+    }
+  } else {
+    const str = new TextDecoder().decode(buffer);
+    const vertRe = /vertex\\s+([\\d.eE+\\-]+)\\s+([\\d.eE+\\-]+)\\s+([\\d.eE+\\-]+)/g;
+    const normRe = /facet normal\\s+([\\d.eE+\\-]+)\\s+([\\d.eE+\\-]+)\\s+([\\d.eE+\\-]+)/g;
+    let vm, nm, idx2 = 0;
+    const norms2 = [];
+    while ((nm = normRe.exec(str)) !== null) norms2.push([+nm[1],+nm[2],+nm[3]]);
+    let fi = 0;
+    while ((vm = vertRe.exec(str)) !== null) {
+      positions.push(+vm[1],+vm[2],+vm[3]);
+      const n = norms2[Math.floor(fi/3)] || [0,0,1];
+      normals.push(...n);
+      indices.push(idx2++);
+      fi++;
+    }
+  }
+  return { positions: new Float32Array(positions), normals: new Float32Array(normals), indices: new Uint32Array(indices) };
+}
+
+// ── Writers ────────────────────────────────────────────────────
+function getVert(geo, idx) { const vi=idx*3; return [geo.positions[vi],geo.positions[vi+1],geo.positions[vi+2]]; }
+function getNorm(geo, idx) { const vi=idx*3; return [geo.normals[vi]||0,geo.normals[vi+1]||0,geo.normals[vi+2]||1]; }
+
+function writeSTL(geo) {
+  const triCount = geo.indices.length / 3;
+  const buf = new ArrayBuffer(84 + triCount * 50);
+  const view = new DataView(buf);
+  const header = new TextEncoder().encode('MeshThis Export');
+  new Uint8Array(buf, 0, 80).set(header.slice(0, 80));
+  view.setUint32(80, triCount, true);
+  for (let i = 0; i < triCount; i++) {
+    const off = 84 + i * 50;
+    const i0 = geo.indices[i*3];
+    const n = getNorm(geo, i0);
+    view.setFloat32(off, n[0], true); view.setFloat32(off+4, n[1], true); view.setFloat32(off+8, n[2], true);
+    for (let v = 0; v < 3; v++) {
+      const p = getVert(geo, geo.indices[i*3+v]);
+      view.setFloat32(off+12+v*12, p[0], true);
+      view.setFloat32(off+12+v*12+4, p[1], true);
+      view.setFloat32(off+12+v*12+8, p[2], true);
+    }
+    view.setUint16(off+48, 0, true);
+  }
+  return buf;
+}
+
+function writeOBJ(geo) {
+  const lines = ['# MeshThis Export', ''];
+  const p = geo.positions, n = geo.normals;
+  for (let i = 0; i < p.length; i += 3)
+    lines.push('v '+Number(p[i]).toFixed(5)+' '+Number(p[i+1]).toFixed(5)+' '+Number(p[i+2]).toFixed(5));
+  lines.push('');
+  for (let i = 0; i < n.length; i += 3)
+    lines.push('vn '+Number(n[i]).toFixed(5)+' '+Number(n[i+1]).toFixed(5)+' '+Number(n[i+2]).toFixed(5));
+  lines.push('');
+  const ind = geo.indices;
+  for (let i = 0; i < ind.length; i += 3) {
+    const a=ind[i]+1, b=ind[i+1]+1, c=ind[i+2]+1;
+    lines.push('f '+a+'//'+a+' '+b+'//'+b+' '+c+'//'+c);
+  }
+  return new TextEncoder().encode(lines.join('\\n')).buffer;
+}
+
+function write3MF(geo) {
+  const p = geo.positions, ind = geo.indices;
+  let vx = '', tx = '';
+  for (let i = 0; i < p.length; i += 3)
+    vx += '<vertex x="'+Number(p[i]).toFixed(4)+'" y="'+Number(p[i+1]).toFixed(4)+'" z="'+Number(p[i+2]).toFixed(4)+'"/>';
+  for (let i = 0; i < ind.length; i += 3)
+    tx += '<triangle v1="'+ind[i]+'" v2="'+ind[i+1]+'" v3="'+ind[i+2]+'"/>';
+
+  const files = [
+    { name: '[Content_Types].xml', data: '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/></Types>' },
+    { name: '_rels/.rels', data: '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>' },
+    { name: '3D/3dmodel.model', data: '<?xml version="1.0" encoding="UTF-8"?><model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"><resources><object id="1" type="model"><mesh><vertices>'+vx+'</vertices><triangles>'+tx+'</triangles></mesh></object></resources><build><item objectid="1"/></build></model>' }
+  ];
+
+  const ct = new Uint32Array(256);
+  for (let i=0;i<256;i++){let c=i;for(let j=0;j<8;j++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);ct[i]=c;}
+  function crc32(b){let c=0xFFFFFFFF;for(const x of b)c=ct[(c^x)&0xFF]^(c>>>8);return(c^0xFFFFFFFF)>>>0;}
+
+  const enc = new TextEncoder();
+  const entries = files.map(f=>{const nb=enc.encode(f.name),db=enc.encode(f.data);return{nb,db,crc:crc32(db)};});
+  let total=22,local=0;
+  entries.forEach(e=>{local+=30+e.nb.length+e.db.length;total+=30+e.nb.length+e.db.length+46+e.nb.length;});
+  const buf=new ArrayBuffer(total),d=new DataView(buf),u=new Uint8Array(buf);
+  let o=0;const lo=[];
+  entries.forEach(e=>{
+    lo.push(o);
+    d.setUint32(o,0x04034B50,true);o+=4;d.setUint16(o,20,true);o+=2;d.setUint16(o,0,true);o+=2;
+    d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;
+    d.setUint32(o,e.crc,true);o+=4;d.setUint32(o,e.db.length,true);o+=4;d.setUint32(o,e.db.length,true);o+=4;
+    d.setUint16(o,e.nb.length,true);o+=2;d.setUint16(o,0,true);o+=2;
+    u.set(e.nb,o);o+=e.nb.length;u.set(e.db,o);o+=e.db.length;
+  });
+  const cs=o;
+  entries.forEach((e,i)=>{
+    d.setUint32(o,0x02014B50,true);o+=4;d.setUint16(o,20,true);o+=2;d.setUint16(o,20,true);o+=2;
+    d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;
+    d.setUint32(o,e.crc,true);o+=4;d.setUint32(o,e.db.length,true);o+=4;d.setUint32(o,e.db.length,true);o+=4;
+    d.setUint16(o,e.nb.length,true);o+=2;d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;
+    d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;d.setUint32(o,0,true);o+=4;
+    d.setUint32(o,lo[i],true);o+=4;u.set(e.nb,o);o+=e.nb.length;
+  });
+  const cds=o-cs;
+  d.setUint32(o,0x06054B50,true);o+=4;d.setUint16(o,0,true);o+=2;d.setUint16(o,0,true);o+=2;
+  d.setUint16(o,entries.length,true);o+=2;d.setUint16(o,entries.length,true);o+=2;
+  d.setUint32(o,cds,true);o+=4;d.setUint32(o,cs,true);o+=4;d.setUint16(o,0,true);
+  return buf;
+}
+
+// ── Health ─────────────────────────────────────────────────────
+function computeHealth(geo) {
+  const pos = geo.positions, idx = geo.indices;
+  const triCount = idx.length / 3;
+  let minX=Infinity,minY=Infinity,minZ=Infinity,maxX=-Infinity,maxY=-Infinity,maxZ=-Infinity;
+  for (let i=0;i<pos.length;i+=3){
+    if(pos[i]<minX)minX=pos[i];if(pos[i]>maxX)maxX=pos[i];
+    if(pos[i+1]<minY)minY=pos[i+1];if(pos[i+1]>maxY)maxY=pos[i+1];
+    if(pos[i+2]<minZ)minZ=pos[i+2];if(pos[i+2]>maxZ)maxZ=pos[i+2];
+  }
+  let vol=0;
+  for(let i=0;i<triCount;i++){
+    const i0=idx[i*3]*3,i1=idx[i*3+1]*3,i2=idx[i*3+2]*3;
+    vol+=(pos[i0]*(pos[i1+1]*pos[i2+2]-pos[i1+2]*pos[i2+1])
+         -pos[i0+1]*(pos[i1]*pos[i2+2]-pos[i1+2]*pos[i2])
+         +pos[i0+2]*(pos[i1]*pos[i2+1]-pos[i1+1]*pos[i2]));
+  }
+  vol=Math.abs(vol)/6;
+  const edgeMap=new Map();let openEdges=0;
+  for(let i=0;i<triCount;i++){
+    const v=[idx[i*3],idx[i*3+1],idx[i*3+2]];
+    for(let e=0;e<3;e++){const a=v[e],b=v[(e+1)%3];const k=a<b?a+'_'+b:b+'_'+a;edgeMap.set(k,(edgeMap.get(k)||0)+1);}
+  }
+  for(const c of edgeMap.values()) if(c!==2) openEdges++;
+  return { triCount, dimX:(maxX-minX).toFixed(1), dimY:(maxY-minY).toFixed(1), dimZ:(maxZ-minZ).toFixed(1),
+           volumeCm3:(vol/1000).toFixed(2), isWatertight:openEdges===0, openEdges };
+}
+
+// ── Main handler ───────────────────────────────────────────────
+self.onmessage = async function(e) {
+  const { type, filename, buffer, outputFormat, triBudget } = e.data;
+  if (type !== 'convert') return;
+
+  const format = detectFormat(filename);
+  post('log', { level: 'info', msg: filename + ' · ' + fmtBytes(buffer.byteLength) + ' · ' + format + ' · budget: ' + Math.round(triBudget/1000) + 'k tris' });
+  post('progress', { value: 10, indet: false });
+  post('status', { msg: 'Parsing ' + format + '...' });
+
+  const t0 = performance.now();
+  let geo;
+
+  try {
+    if (format === 'PLY') {
+      geo = parsePLY(buffer, triBudget);
+    } else if (format === 'OBJ') {
+      geo = parseOBJ(buffer, triBudget);
+    } else if (format === 'STL') {
+      geo = parseSTL(buffer, triBudget);
+    } else {
+      throw new Error('Unsupported format: ' + format);
+    }
+
+    const triCount = geo.indices.length / 3;
+    post('log', { level: 'success', msg: 'Parsed in ' + ((performance.now()-t0)/1000).toFixed(2) + 's · ' + triCount.toLocaleString() + ' triangles' });
+    post('progress', { value: 75, indet: false });
+    post('status', { msg: 'Writing ' + outputFormat + '...' });
+
+    let outBuffer, outExt, outMime;
+    if (outputFormat === 'STL') { outBuffer=writeSTL(geo); outExt='.stl'; outMime='application/octet-stream'; }
+    else if (outputFormat === 'OBJ') { outBuffer=writeOBJ(geo); outExt='.obj'; outMime='text/plain'; }
+    else if (outputFormat === '3MF') { outBuffer=write3MF(geo); outExt='.3mf'; outMime='application/vnd.ms-package.3dmanufacturing-3dmodel+xml'; }
+
+    const health = computeHealth(geo);
+    const totalTime = performance.now() - t0;
+
+    post('log', { level: 'success', msg: 'Done in ' + (totalTime/1000).toFixed(2) + 's · output: ' + fmtBytes(outBuffer.byteLength) });
+    post('log', { level: health.isWatertight ? 'success' : 'warn', msg: 'Mesh: ' + (health.isWatertight ? '✓ Watertight' : '⚠ ' + health.openEdges + ' open edges') + ' · ' + health.dimX + '×' + health.dimY + '×' + health.dimZ + ' mm' });
+    post('progress', { value: 100, indet: false });
+    post('status', { msg: 'Done!' });
+
+    post('result', { geo: { positions: geo.positions, normals: geo.normals, indices: geo.indices },
+      outBuffer, outExt, outMime, triCount, totalTime, outputFormat, health },
+      [outBuffer, geo.positions.buffer, geo.normals.buffer, geo.indices.buffer]);
+
+  } catch(err) {
+    post('log', { level: 'error', msg: 'Error: ' + err.message });
+    post('error', { msg: err.message });
+  }
+};
+`;
+
+// ═══════════════════════════════════════════════════════════════
+// APP
+// ═══════════════════════════════════════════════════════════════
+const dropzone    = document.getElementById('dropzone');
+const fileInput   = document.getElementById('fileInput');
+const mainGrid    = document.getElementById('mainGrid');
+const logBody     = document.getElementById('logBody');
+const progressFill   = document.getElementById('progressFill');
+const progressStatus = document.getElementById('progressStatus');
+const progressLabel  = document.getElementById('progressLabel');
+const btnDownload    = document.getElementById('btnDownload');
+const btnReset       = document.getElementById('btnReset');
+const limitBanner    = document.getElementById('limitBanner');
+
+let worker = null, currentFile = null, downloadBlob = null, downloadFilename = null;
+
+function log(level, msg) {
+  const line = document.createElement('div');
+  line.className = 'log-line ' + level;
+  const ts = new Date().toLocaleTimeString('en',{hour12:false});
+  line.textContent = '['+ts+'] '+msg;
+  logBody.appendChild(line);
+  logBody.scrollTop = logBody.scrollHeight;
+}
+
+function setProgress(value, indet) {
+  progressFill.style.width = value + '%';
+  if (indet) progressFill.classList.add('indeterminate');
+  else progressFill.classList.remove('indeterminate');
+}
+
+function setStatus(msg) { progressStatus.textContent = msg; }
+
+function enableOutputBtns() {
+  document.getElementById('btnToSTL').disabled = false;
+  document.getElementById('btnToOBJ').disabled = false;
+  document.getElementById('btn3MF').disabled = false;
+}
+
+function createWorker() {
+  if (worker) { worker.terminate(); worker = null; }
+  const blob = new Blob([WORKER_SRC], { type: 'application/javascript' });
+  worker = new Worker(URL.createObjectURL(blob));
+  worker.onmessage = handleWorkerMsg;
+  worker.onerror = e => { log('error', 'Worker error: ' + e.message); setStatus('Error'); };
+}
+
+function handleWorkerMsg(e) {
+  const m = e.data;
+  switch(m.type) {
+    case 'log':      log(m.level, m.msg); break;
+    case 'progress': setProgress(m.value, m.indet); break;
+    case 'status':   setStatus(m.msg); break;
+    case 'decimated':
+      document.getElementById('decimateBanner').classList.add('visible');
+      document.getElementById('decimateInfo').textContent =
+        'Large scan: ' + m.original.toLocaleString() + ' faces → ~' + m.target.toLocaleString() + ' triangles (your budget).';
+      break;
+    case 'result':   handleResult(m); break;
+    case 'error':
+      setStatus('Error: ' + m.msg);
+      setProgress(0, false);
+      progressFill.style.background = 'var(--red)';
+      btnReset.classList.add('visible');
+      break;
+  }
+}
+
+function handleResult(m) {
+  const { outBuffer, outExt, outMime, triCount, totalTime, outputFormat, health } = m;
+
+  downloadBlob = new Blob([outBuffer], { type: outMime });
+  const baseName = (currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'scan');
+  downloadFilename = baseName + '_meshthis' + outExt;
+
+  document.getElementById('btnDownloadLabel').textContent = 'Download ' + outputFormat + ' — ' + downloadFilename;
+  btnDownload.classList.add('visible');
+  btnReset.classList.add('visible');
+
+  if (health) {
+    const panel = document.getElementById('healthPanel');
+    const badge = document.getElementById('healthBadge');
+    panel.classList.add('visible');
+    if (health.isWatertight) {
+      badge.textContent = '✓ Print Ready'; badge.className = 'health-badge pass';
+      document.getElementById('healthWatertight').textContent = '✓ Watertight';
+      document.getElementById('healthWatertight').className = 'health-stat-value good';
+    } else {
+      badge.textContent = '⚠ Check Mesh'; badge.className = 'health-badge warn';
+      document.getElementById('healthWatertight').textContent = '⚠ ' + health.openEdges + ' open edges';
+      document.getElementById('healthWatertight').className = 'health-stat-value warn';
+    }
+    document.getElementById('healthTris').textContent = Number(health.triCount).toLocaleString();
+    document.getElementById('healthDims').textContent = health.dimX + ' × ' + health.dimY + ' × ' + health.dimZ;
+    document.getElementById('healthVol').textContent  = health.volumeCm3 + ' cm³';
+  }
+
+  incrementUsage();
+  setProgress(100, false);
+  setStatus('✓ Ready to download');
+  progressFill.style.background = 'linear-gradient(90deg, var(--orange), var(--amber))';
+}
+
+function convertFile(file, outputFormat) {
+  if (!canConvert()) { limitBanner.classList.add('visible'); showPaywall('limit'); return; }
+
+  currentFile = file;
+  btnDownload.classList.remove('visible');
+  btnReset.classList.remove('visible');
+  progressFill.style.background = '';
+  document.getElementById('decimateBanner').classList.remove('visible');
+  setProgress(0, false);
+  setStatus('Reading file...');
+  log('info', 'Converting ' + file.name + ' → ' + outputFormat);
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    let buf = e.target.result;
+    createWorker();
+    worker.postMessage({ type: 'convert', filename: file.name, buffer: buf, outputFormat, triBudget: getTriBudget() }, [buf]);
+    buf = null;
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function handleFile(file) {
+  if (!file) return;
+  const validExts = ['ply', 'obj', 'stl'];
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!validExts.includes(ext)) { log('error', 'Unsupported format: .' + ext); return; }
+
+  mainGrid.classList.add('visible');
+  enableOutputBtns();
+  setStatus('Select output format →');
+  log('info', 'File loaded: ' + file.name + ' · ' + (file.size / 1048576).toFixed(1) + ' MB');
+  currentFile = file;
+}
+
+['btnToSTL','btnToOBJ','btn3MF'].forEach(id => {
+  document.getElementById(id).addEventListener('click', () => {
+    if (!currentFile) return;
+    const fmt = id === 'btnToSTL' ? 'STL' : id === 'btnToOBJ' ? 'OBJ' : '3MF';
+    btnDownload.classList.remove('visible');
+    downloadBlob = null;
+    progressFill.style.background = '';
+    logBody.innerHTML = '';
+    convertFile(currentFile, fmt);
+  });
+});
+
+btnDownload.addEventListener('click', () => {
+  if (!downloadBlob) return;
+  const url = URL.createObjectURL(downloadBlob);
+  const a = document.createElement('a');
+  a.href = url; a.download = downloadFilename; a.click();
+  URL.revokeObjectURL(url);
+  log('success', 'Downloaded: ' + downloadFilename);
+});
+
+btnReset.addEventListener('click', () => {
+  mainGrid.classList.remove('visible');
+  document.getElementById('healthPanel').classList.remove('visible');
+  document.getElementById('decimateBanner').classList.remove('visible');
+  btnDownload.classList.remove('visible');
+  btnReset.classList.remove('visible');
+  limitBanner.classList.remove('visible');
+  logBody.innerHTML = '';
+  setProgress(0, false);
+  progressFill.style.background = '';
+  setStatus('Ready — select output format above');
+  currentFile = null; downloadBlob = null; fileInput.value = '';
+  if (worker) { worker.terminate(); worker = null; }
+});
+
+document.getElementById('btnClearLog').addEventListener('click', () => { logBody.innerHTML = ''; });
+
+dropzone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropzone.classList.add('over'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('over'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('over');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+function showPaywall(reason) {
+  const t = document.getElementById('paywallTitle');
+  const d = document.getElementById('paywallDesc');
+  if (reason === 'limit') {
+    t.textContent = 'Daily Limit Reached';
+    d.innerHTML = "You've used all <strong>3 free conversions</strong> today.<br>Upgrade for unlimited access.";
+  } else if (reason === 'size') {
+    t.textContent = 'File Too Large';
+    d.innerHTML = "Files over <strong>30MB</strong> require Pro.<br>Pro supports up to 200MB.";
+  } else {
+    t.textContent = 'Upgrade MeshThis';
+    d.innerHTML = "Unlock <strong>unlimited conversions</strong>, larger files,<br>and full triangle budget control.";
+  }
+  document.getElementById('paywall').classList.add('visible');
+}
+
+function closePaywall() { document.getElementById('paywall').classList.remove('visible'); }
+
+// Scroll fade-up
+const fadeObs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+</script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:999;font-size:12px;color:rgba(255,255,255,0.9);">
+  <span>We use localStorage for your daily conversion counter. No tracking cookies. No ads. <a href="cookies.html" style="color:var(--orange);">Learn more</a></span>
+  <button onclick="localStorage.setItem('mt_consent','1');document.getElementById('cookie-banner').style.display='none';" style="background:var(--orange);color:#000;border:none;padding:7px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--mono);flex-shrink:0;">Got it</

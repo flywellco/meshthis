@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Policy — MeshThis</title>
+<meta name="description" content="MeshThis Cookie Policy — we use no tracking cookies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090f;--s1:#0c1018;--s2:#111827;--border:#1e2d45;--border2:#263548;--orange:#ff6b2b;--green:#00ff9d;--amber:#ffb547;--red:#ff3a3a;--text:#e2e8f0;--muted:#8895aa;--dim:#4a5568;--mono:'DM Mono',monospace;--display:'Syne',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,107,43,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,43,0.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--display);font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-0.03em;text-decoration:none;}
+.nav-logo em{color:var(--orange);font-style:normal;}
+.nav-links{display:flex;gap:24px;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.85);text-decoration:none;transition:color 0.15s;}
+.nav-links a:hover{color:#fff;}
+.btn-nav-app{font-family:var(--mono);font-size:13px;padding:6px 16px;background:var(--orange);color:#000;border:none;border-radius:5px;text-decoration:none;transition:opacity 0.15s;}
+.btn-nav-app:hover{opacity:0.85;}
+.container{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:60px 24px 80px;}
+.page-badge{display:inline-block;font-size:11px;color:var(--amber);background:rgba(255,181,71,0.08);border:1px solid rgba(255,181,71,0.2);padding:4px 10px;border-radius:3px;margin-bottom:20px;letter-spacing:0.5px;text-transform:uppercase;}
+h1{font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-0.03em;}
+.meta{color:var(--dim);font-size:12px;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+h2{font-size:13px;font-weight:600;color:var(--orange);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+p{color:rgba(255,255,255,0.9);margin-bottom:14px;font-size:14px;line-height:1.6;}
+ul{color:rgba(255,255,255,0.9);font-size:14px;padding-left:20px;margin-bottom:14px;line-height:1.6;}
+li{margin-bottom:6px;}
+strong{color:#fff;}
+a{color:var(--orange);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code{font-family:var(--mono);background:var(--s1);border:1px solid var(--border);padding:2px 6px;border-radius:3px;font-size:12px;}
+.info-box{background:rgba(0,255,157,0.06);border:1px solid rgba(0,255,157,0.25);border-radius:6px;padding:18px 20px;margin:20px 0;display:flex;gap:12px;align-items:flex-start;}
+.info-box .icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.info-box strong{color:var(--green);display:block;margin-bottom:4px;font-size:13px;}
+.info-box p{font-size:13px;margin:0;}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.data-table th{text-align:left;padding:10px 14px;background:var(--s1);color:var(--dim);border:1px solid var(--border);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;}
+.data-table td{padding:10px 14px;border:1px solid var(--border);color:rgba(255,255,255,0.9);vertical-align:top;}
+.data-table td:first-child{color:#fff;font-weight:500;font-family:var(--mono);}
+.tag-no{color:var(--red);font-size:11px;background:rgba(255,58,58,0.08);padding:2px 7px;border-radius:3px;white-space:nowrap;}
+.highlight{color:#fff;background:var(--s1);border-left:3px solid var(--orange);padding:12px 16px;margin:16px 0;font-size:13px;border-radius:0 4px 4px 0;}
+.btn-clear{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:4px;font-size:12px;cursor:pointer;font-family:var(--mono);transition:all 0.2s;}
+.btn-clear:hover{border-color:var(--red);color:var(--red);}
+#clear-msg{color:var(--green);font-size:12px;margin-top:8px;display:none;}
+.lp-footer{border-top:1px solid var(--border);padding:28px 32px;margin-top:80px;text-align:center;position:relative;z-index:1;}
+.lp-footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:10px;}
+.lp-footer-links a{font-size:13px;color:rgba(255,255,255,0.85);text-decoration:none;}
+.lp-footer-links a:hover{color:#fff;}
+.lp-footer-copy{font-size:11px;color:var(--dim);}
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:999;font-size:12px;color:rgba(255,255,255,0.9);}
+#cookie-banner.hidden{display:none;}
+#cookie-banner button{background:var(--orange);color:#000;border:none;padding:7px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--mono);flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Mesh<em>This</em></a>
+  <div class="nav-links">
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="disclaimer.html">Disclaimer</a>
+  </div>
+  <a href="/" class="btn-nav-app">Open App →</a>
+</nav>
+
+<div class="container">
+
+  <div class="page-badge">🍪 Cookie Policy</div>
+  <h1>Cookie Policy</h1>
+  <p class="meta">Last updated: March 2026 &nbsp;·&nbsp; Compliant with EU eCookie Directive and GDPR</p>
+
+  <div class="info-box">
+    <div class="icon">✅</div>
+    <div>
+      <strong>We use zero tracking cookies</strong>
+      <p>MeshThis does not use cookies of any kind. No analytics cookies, no advertising cookies, no session cookies. The only browser storage we use is <code>localStorage</code> — which stays on your device and never leaves it.</p>
+    </div>
+  </div>
+
+  <h2>What Are Cookies?</h2>
+  <p>Cookies are small text files that websites place on your device. They are used for everything from keeping you logged in to tracking you across websites for advertising. MeshThis uses <strong>none of these</strong>.</p>
+
+  <h2>What We Use Instead: localStorage</h2>
+  <p>The only browser storage MeshThis uses is the browser's built-in <code>localStorage</code> API. Unlike cookies, <code>localStorage</code> data never leaves your device, is never transmitted to our servers, and is not used for tracking or profiling.</p>
+
+  <table class="data-table">
+    <tr><th>Key</th><th>Purpose</th><th>Leaves Device?</th><th>Expiry</th></tr>
+    <tr><td>mt_usage</td><td>Daily conversion counter and date</td><td><span class="tag-no">Never</span></td><td>Resets daily at midnight</td></tr>
+    <tr><td>mt_pro</td><td>Stores your plan type and expiry after Paddle verification</td><td><span class="tag-no">Never</span></td><td>Duration of subscription</td></tr>
+    <tr><td>mt_consent</td><td>Records that you dismissed the storage notice banner</td><td><span class="tag-no">Never</span></td><td>Until you clear browser data</td></tr>
+  </table>
+
+  <h2>Analytics: Plausible</h2>
+  <p>We use <a href="https://plausible.io" target="_blank">Plausible Analytics</a> — a privacy-first tool that uses no cookies, does not track individuals, anonymises IP addresses, and is GDPR compliant without requiring a consent banner.</p>
+
+  <h2>What We Do NOT Use</h2>
+  <table class="data-table">
+    <tr><th>Technology</th><th>Used?</th><th>Reason</th></tr>
+    <tr><td>Google Analytics</td><td><span class="tag-no">No</span></td><td>Requires cookies, tracks individuals across sites</td></tr>
+    <tr><td>Facebook Pixel</td><td><span class="tag-no">No</span></td><td>Advertising tracker</td></tr>
+    <tr><td>Google Ads / AdSense</td><td><span class="tag-no">No</span></td><td>MeshThis shows no advertisements</td></tr>
+    <tr><td>Session replay tools</td><td><span class="tag-no">No</span></td><td>We do not record your screen</td></tr>
+    <tr><td>Retargeting pixels</td><td><span class="tag-no">No</span></td><td>We do not track you after you leave</td></tr>
+    <tr><td>Third-party cookies</td><td><span class="tag-no">No</span></td><td>None loaded from any external source</td></tr>
+  </table>
+
+  <h2>EU eCookie Directive Compliance</h2>
+  <p>Because MeshThis uses no cookies at all — and Plausible Analytics uses no cookies — we are fully compliant with the EU eCookie Directive without requiring a cookie consent popup. The storage notice banner is purely informational.</p>
+
+  <h2>How to Clear Your Data</h2>
+  <p>Your <code>localStorage</code> data can be cleared at any time. Clearing it will reset your daily conversion counter and sign you out of any active session.</p>
+  <button class="btn-clear" onclick="['mt_usage','mt_pro','mt_consent'].forEach(k=>localStorage.removeItem(k));document.getElementById('clear-msg').style.display='block';">Clear all MeshThis local data</button>
+  <p id="clear-msg">✓ All MeshThis localStorage data cleared.</p>
+  <ul style="margin-top:16px;">
+    <li><strong>Chrome / Edge:</strong> DevTools (F12) → Application → Local Storage → meshthis.com</li>
+    <li><strong>Firefox:</strong> DevTools (F12) → Storage → Local Storage → meshthis.com</li>
+    <li><strong>Safari:</strong> Develop → Web Inspector → Storage → Local Storage</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <div class="highlight"><a href="/cdn-cgi/l/email-protection#d2bab7bebebd92bfb7a1baa6babba1fcb1bdbf"><span class="__cf_email__" data-cfemail="741c1118181b341911071c001c1d075a171b19">[email&#160;protected]</span></a> &nbsp;·&nbsp; Questions about our storage practices welcome</div>
+
+</div>
+
+<footer class="lp-footer">
+  <div class="lp-footer-links">
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="disclaimer.html">Disclaimer</a>
+    <a href="/cdn-cgi/l/email-protection#7c14191010133c11190f140814150f521f1311">Contact</a>
+  </div>
+  <p class="lp-footer-copy">© 2026 MeshThis · meshthis.com · Your files never leave your browser</p>
+</footer>
+
+<div id="cookie-banner">
+  <span>We use localStorage for your daily conversion counter. No tracking cookies. No ads. <a href="cookies.html">Learn more</a></span>
+  <button onclick="localStorage.setItem('mt_consent','1');document.getElementById('cookie-banner').classList.ad

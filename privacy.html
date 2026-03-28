@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — MeshThis</title>
+<meta name="description" content="MeshThis Privacy Policy — your scan files never leave your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090f;--s1:#0c1018;--s2:#111827;--border:#1e2d45;--border2:#263548;--orange:#ff6b2b;--green:#00ff9d;--amber:#ffb547;--red:#ff3a3a;--text:#e2e8f0;--muted:#8895aa;--dim:#4a5568;--mono:'DM Mono',monospace;--display:'Syne',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,107,43,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,43,0.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--display);font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-0.03em;text-decoration:none;}
+.nav-logo em{color:var(--orange);font-style:normal;}
+.nav-links{display:flex;gap:24px;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.85);text-decoration:none;transition:color 0.15s;}
+.nav-links a:hover{color:#fff;}
+.btn-nav-app{font-family:var(--mono);font-size:13px;padding:6px 16px;background:var(--orange);color:#000;border:none;border-radius:5px;text-decoration:none;transition:opacity 0.15s;}
+.btn-nav-app:hover{opacity:0.85;}
+.container{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:60px 24px 80px;}
+.page-badge{display:inline-block;font-size:11px;color:var(--green);background:rgba(0,255,157,0.08);border:1px solid rgba(0,255,157,0.2);padding:4px 10px;border-radius:3px;margin-bottom:20px;letter-spacing:0.5px;text-transform:uppercase;}
+h1{font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-0.03em;}
+.meta{color:var(--dim);font-size:12px;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+h2{font-size:13px;font-weight:600;color:var(--orange);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:0.01em;}
+h3{font-size:13px;font-weight:600;color:#fff;margin:20px 0 8px;}
+p{color:rgba(255,255,255,0.9);margin-bottom:14px;font-size:14px;line-height:1.6;}
+ul{color:rgba(255,255,255,0.9);font-size:14px;padding-left:20px;margin-bottom:14px;line-height:1.6;}
+li{margin-bottom:6px;}
+strong{color:#fff;}
+a{color:var(--orange);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.info-box{background:rgba(0,255,157,0.06);border:1px solid rgba(0,255,157,0.25);border-radius:6px;padding:18px 20px;margin:20px 0;display:flex;gap:12px;align-items:flex-start;}
+.info-box .icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.info-box strong{color:var(--green);display:block;margin-bottom:4px;font-size:13px;}
+.info-box p{font-size:13px;margin:0;}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.data-table th{text-align:left;padding:10px 14px;background:var(--s1);color:var(--dim);border:1px solid var(--border);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;}
+.data-table td{padding:10px 14px;border:1px solid var(--border);color:rgba(255,255,255,0.9);vertical-align:top;}
+.data-table td:first-child{color:#fff;font-weight:500;}
+.none-tag{color:var(--green);font-size:11px;background:rgba(0,255,157,0.08);padding:2px 7px;border-radius:3px;}
+.highlight{color:#fff;background:var(--s1);border-left:3px solid var(--orange);padding:12px 16px;margin:16px 0;font-size:13px;border-radius:0 4px 4px 0;}
+.lp-footer{border-top:1px solid var(--border);padding:28px 32px;margin-top:80px;text-align:center;position:relative;z-index:1;}
+.lp-footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:10px;}
+.lp-footer-links a{font-size:13px;color:rgba(255,255,255,0.85);text-decoration:none;}
+.lp-footer-links a:hover{color:#fff;}
+.lp-footer-copy{font-size:11px;color:var(--dim);}
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:999;font-size:12px;color:rgba(255,255,255,0.9);}
+#cookie-banner.hidden{display:none;}
+#cookie-banner button{background:var(--orange);color:#000;border:none;padding:7px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--mono);flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Mesh<em>This</em></a>
+  <div class="nav-links">
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="disclaimer.html">Disclaimer</a>
+  </div>
+  <a href="/" class="btn-nav-app">Open App →</a>
+</nav>
+
+<div class="container">
+
+  <div class="page-badge">🔒 Privacy First</div>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: March 2026 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Governing law: Palau</p>
+
+  <div class="info-box">
+    <div class="icon">🛡️</div>
+    <div>
+      <strong>Your scan files never leave your browser</strong>
+      <p>MeshThis processes all 3D files locally using WebAssembly (WASM). No file data is ever transmitted to our servers or any third party. This is not just a policy — it is a technical fact of how the software works.</p>
+    </div>
+  </div>
+
+  <h2>1. Who We Are</h2>
+  <p>MeshThis ("we", "us", "our") is a browser-based 3D scan file conversion tool available at meshthis.com. The service is operated by an independent developer with tax residency in Palau.</p>
+  <p>Contact: <a href="/cdn-cgi/l/email-protection#5038353c3c3f103d352338243839237e333f3d"><span class="__cf_email__" data-cfemail="8ee6ebe2e2e1cee3ebfde6fae6e7fda0ede1e3">[email&#160;protected]</span></a></p>
+
+  <h2>2. What Data We Collect</h2>
+  <table class="data-table">
+    <tr><th>Data Type</th><th>Collected?</th><th>Details</th></tr>
+    <tr><td>3D scan file content</td><td><span class="none-tag">NEVER</span></td><td>All file processing happens locally in your browser via WASM. Files are not transmitted anywhere.</td></tr>
+    <tr><td>File names</td><td><span class="none-tag">NEVER</span></td><td>File names are displayed in the UI only. They are not logged or stored anywhere.</td></tr>
+    <tr><td>Conversion history</td><td><span class="none-tag">NEVER</span></td><td>We do not record which files you converted or when.</td></tr>
+    <tr><td>Usage counter</td><td>Locally only</td><td>A daily conversion counter is stored in your browser's localStorage. It never leaves your device.</td></tr>
+    <tr><td>Payment data</td><td>Via Paddle only</td><td>Paddle processes all payments as Merchant of Record. We receive a plan status confirmation only — never card numbers or billing details.</td></tr>
+    <tr><td>Analytics</td><td>Anonymised only</td><td>We use Plausible Analytics — privacy-first, cookie-free, GDPR-compliant. No personal data collected. No fingerprinting.</td></tr>
+    <tr><td>IP address</td><td>Anonymised</td><td>Plausible anonymises IP addresses. We do not log or store IP addresses ourselves.</td></tr>
+    <tr><td>Email address</td><td>If provided</td><td>Only if you contact support or create an account. Used solely to respond or manage your subscription.</td></tr>
+  </table>
+
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>Operate the conversion service and enforce fair-use limits</li>
+    <li>Process and manage your subscription via Paddle</li>
+    <li>Respond to support enquiries</li>
+    <li>Understand aggregate usage trends (anonymised analytics only)</li>
+    <li>Comply with legal obligations</li>
+  </ul>
+
+  <h2>4. What We Do Not Do</h2>
+  <ul>
+    <li>We do not sell your data to anyone</li>
+    <li>We do not share your data with third parties except as described in this policy</li>
+    <li>We do not run advertising networks or sell ad placements</li>
+    <li>We do not build user profiles or track behaviour across websites</li>
+    <li>We do not store your 3D scan files, even temporarily on a server</li>
+  </ul>
+
+  <h2>5. Third-Party Services</h2>
+  <ul>
+    <li><strong>Paddle</strong> — payment processing as Merchant of Record. Handles all billing, taxes, and receipts. Subject to <a href="https://www.paddle.com/legal/privacy" target="_blank">Paddle's Privacy Policy</a>.</li>
+    <li><strong>Plausible Analytics</strong> — anonymised analytics. No cookies, no personal data. Subject to <a href="https://plausible.io/privacy" target="_blank">Plausible's Privacy Policy</a>.</li>
+    <li><strong>Cloudflare Pages</strong> — hosting infrastructure. Subject to <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">Cloudflare's Privacy Policy</a>.</li>
+    <li><strong>JSDelivr CDN</strong> — delivery of WebAssembly libraries. No user data is shared.</li>
+  </ul>
+
+  <h2>6. Legal Basis for Processing (GDPR)</h2>
+  <ul>
+    <li><strong>Contract</strong> — processing necessary to provide the service you subscribed to</li>
+    <li><strong>Legitimate interests</strong> — anonymised analytics to improve the service</li>
+    <li><strong>Consent</strong> — if you provide your email for support</li>
+    <li><strong>Legal obligation</strong> — where required by applicable law</li>
+  </ul>
+
+  <h2>7. Your Rights (GDPR / EU Users)</h2>
+  <ul>
+    <li><strong>Access</strong> — request a copy of data we hold about you</li>
+    <li><strong>Rectification</strong> — correct inaccurate personal data</li>
+    <li><strong>Erasure</strong> — request deletion of your data ("right to be forgotten")</li>
+    <li><strong>Restriction</strong> — request we limit how we process your data</li>
+    <li><strong>Portability</strong> — receive your data in a machine-readable format</li>
+    <li><strong>Objection</strong> — object to processing based on legitimate interests</li>
+  </ul>
+  <p>To exercise any of these rights, email <a href="/cdn-cgi/l/email-protection#fd9598919192bd90988e958995948ed39e9290"><span class="__cf_email__" data-cfemail="f199949d9d9eb19c94829985999882df929e9c">[email&#160;protected]</span></a>. We will respond within 30 days.</p>
+
+  <h2>8. Data Retention</h2>
+  <ul>
+    <li>Account data: retained for the duration of your subscription, then deleted within 30 days of cancellation</li>
+    <li>Support emails: retained for 12 months then deleted</li>
+    <li>Payment records: retained as required by Paddle and applicable tax law</li>
+    <li>localStorage data: stored only on your device; cleared when you clear browser data</li>
+  </ul>
+
+  <h2>9. International Data Transfers</h2>
+  <p>Because all 3D file processing is done locally in your browser, no file data is ever transferred internationally. The only data transfers that occur are anonymised analytics and payment processing, both handled by GDPR-compliant third parties.</p>
+
+  <h2>10. Children's Privacy</h2>
+  <p>MeshThis is not directed at children under 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us and we will delete it promptly.</p>
+
+  <h2>11. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy occasionally. Material changes will be noted with an updated date at the top of this page. Continued use of MeshThis after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>12. Contact</h2>
+  <div class="highlight"><a href="/cdn-cgi/l/email-protection#462e232a2a29062b23352e322e2f356825292b"><span class="__cf_email__" data-cfemail="2149444d4d4e614c445249554948520f424e4c">[email&#160;protected]</span></a> &nbsp;·&nbsp; Response within 30 days</div>
+
+</div>
+
+<footer class="lp-footer">
+  <div class="lp-footer-links">
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="disclaimer.html">Disclaimer</a>
+    <a href="/cdn-cgi/l/email-protection#e48c8188888ba48981978c908c8d97ca878b89">Contact</a>
+  </div>
+  <p class="lp-footer-copy">© 2026 MeshThis · meshthis.com · Your files never leave your browser</p>
+</footer>
+
+<div id

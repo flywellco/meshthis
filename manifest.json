@@ -1,0 +1,21 @@
+{
+  "name": "MeshThis",
+  "short_name": "MeshThis",
+  "description": "Turn your 3D scan into something real. Browser-based PLY/OBJ/STL converter.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060810",
+  "theme_color": "#ff6b2b",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
