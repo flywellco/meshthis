@@ -28,8 +28,8 @@
   --green:   #00ff9d;
   --red:     #ff3a3a;
   --text:    #f0f4ff;
-  --muted:   #a8b4c8;
-  --dim:     #6b7a94;
+  --muted:   #c8d0e0;
+  --dim:     #8895aa;
   --mono:    'DM Mono', monospace;
   --display: 'Syne', sans-serif;
 }
@@ -750,7 +750,7 @@ header {
 
   <div class="hero">
     <h1 class="hero-title">Turn your 3D scan<br><span>into something real.</span></h1>
-    <p class="hero-sub">Drop your scan. Mesh it. Print it. &nbsp;·&nbsp; PLY · OBJ · STL → STL · OBJ · 3MF &nbsp;·&nbsp; 100% in your browser</p>
+    <p class="hero-sub">Drop your scan. Mesh it. Print it. PLY · OBJ · STL → STL · OBJ · 3MF<br>100% in your browser</p>
   </div>
 
   <!-- Decimate control -->
@@ -893,26 +893,26 @@ header {
     <div class="fade-up">
       <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">How it works</p>
       <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Three steps.<br>One printable file.</h2>
-      <p style="font-size:0.8rem;color:var(--muted);line-height:1.8;max-width:480px;">No MeshLab. No CloudCompare. No PhD. Just drop your scan and go.</p>
+      <p style="font-size:0.8rem;color:var(--muted);line-height:1.8;max-width:600px;white-space:nowrap;">No MeshLab. No CloudCompare. No PhD. Just drop your scan and go.</p>
     </div>
-    <div class="fade-up" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+    <div class="fade-up mobile-1col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
       <div style="background:var(--s1);padding:36px 28px;">
-        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">01</div>
-        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">📱</div>
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:#ff6b2b;letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">01</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.25);border:1px solid rgba(255,107,43,0.5);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">📱</div>
         <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Scan anything</div>
         <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Use the LiDAR scanner in your iPhone Pro or iPad Pro. Any scanning app works — export the mesh file when done.</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Polycam</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Scaniverse</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">RealityScan</span></div>
       </div>
       <div style="background:var(--s1);padding:36px 28px;">
-        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">02</div>
-        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">⬆</div>
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:#ff6b2b;letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">02</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.25);border:1px solid rgba(255,107,43,0.5);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">⬆</div>
         <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Drop the file</div>
         <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Drag your PLY, OBJ, or STL onto MeshThis above. Smart decimation trims millions of triangles to what your printer actually needs.</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.ply</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.obj</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">.stl</span></div>
       </div>
       <div style="background:var(--s1);padding:36px 28px;">
-        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:rgba(255,107,43,0.08);letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">03</div>
-        <div style="width:40px;height:40px;background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">🖨</div>
+        <div style="font-family:var(--display);font-size:3.5rem;font-weight:800;color:#ff6b2b;letter-spacing:-0.06em;line-height:1;margin-bottom:16px;user-select:none;">03</div>
+        <div style="width:40px;height:40px;background:rgba(255,107,43,0.25);border:1px solid rgba(255,107,43,0.5);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.1rem;">🖨</div>
         <div style="font-family:var(--display);font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;">Print it</div>
         <div style="font-size:0.7rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">Download a clean, slicer-ready STL or 3MF. Open straight in Bambu Studio, PrusaSlicer, or Cura and hit print.</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Bambu Studio</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">PrusaSlicer</span><span style="font-size:0.58rem;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--dim);">Cura</span></div>
@@ -926,18 +926,18 @@ header {
       <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Supported formats</p>
       <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Works with every<br>scan app export.</h2>
     </div>
-    <div class="fade-up" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
-      <div style="background:var(--s1);padding:36px;">
+    <div class="fade-up mobile-1col" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+      <div style="background:var(--s1);padding:36px;display:flex;flex-direction:column;">
         <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);margin-bottom:24px;">Input — your scan files</div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-rows:1fr 1fr 1fr;gap:12px;flex:1;">
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">PLY</span><span style="font-size:0.68rem;color:var(--muted);">Polycam, Scaniverse, iPhone LiDAR · ASCII & Binary</span></div>
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">OBJ</span><span style="font-size:0.68rem;color:var(--muted);">Universal mesh · exported by most scan apps</span></div>
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(255,107,43,0.4);color:var(--orange);min-width:60px;text-align:center;">STL</span><span style="font-size:0.68rem;color:var(--muted);">Already STL? We clean and decimate it for printing</span></div>
         </div>
       </div>
-      <div style="background:var(--s1);padding:36px;">
+      <div style="background:var(--s1);padding:36px;display:flex;flex-direction:column;">
         <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);margin-bottom:24px;">Output — print-ready files</div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-rows:1fr 1fr 1fr;gap:12px;flex:1;">
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">STL</span><span style="font-size:0.68rem;color:var(--muted);">Universal · works with every slicer on the planet</span></div>
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">3MF</span><span style="font-size:0.68rem;color:var(--muted);">Modern · preferred by Bambu Studio & PrusaSlicer</span></div>
           <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:0.65rem;font-weight:500;letter-spacing:0.1em;padding:5px 10px;border-radius:5px;border:1px solid rgba(0,255,157,0.4);color:var(--green);min-width:60px;text-align:center;">OBJ</span><span style="font-size:0.68rem;color:var(--muted);">With normals · for editing in Blender or Meshmixer</span></div>
@@ -952,30 +952,30 @@ header {
       <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Pricing</p>
       <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Start free.<br>Go pro when you need it.</h2>
     </div>
-    <div class="fade-up" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;">
+    <div class="fade-up mobile-1col" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;">
       <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
         <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Free</div>
         <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>0</div>
-        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">Try it out. No account needed.</div>
+        <div style="font-size:0.63rem;color:var(--muted);margin-bottom:18px;line-height:1.6;">Try it out. No account needed.</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>3 conversions per day</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 30MB</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
-          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Smart decimation control</li>
-          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>3 conversions per day</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 30MB</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
         </ul>
         <a href="#dropzone" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Start free →</a>
       </div>
       <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
         <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Standard</div>
         <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>5<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99/mo</sub></div>
-        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">For regular makers and hobbyists.</div>
+        <div style="font-size:0.63rem;color:var(--muted);margin-bottom:18px;line-height:1.6;">For regular makers and hobbyists.</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>10 conversions per day</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 80MB</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
-          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>10 conversions per day</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 80MB</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>Priority processing</li>
         </ul>
         <a href="#" onclick="paddleCheckout('standard');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Get Standard →</a>
       </div>
@@ -983,26 +983,26 @@ header {
         <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:99px;background:var(--orange);color:#000;font-weight:500;white-space:nowrap;">Most popular</div>
         <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Pro</div>
         <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>9<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99/mo</sub></div>
-        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">For serious makers and scan enthusiasts.</div>
+        <div style="font-size:0.63rem;color:var(--muted);margin-bottom:18px;line-height:1.6;">For serious makers and scan enthusiasts.</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited conversions</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Priority processing</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited conversions</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Priority processing</li>
         </ul>
         <a href="#" onclick="paddleCheckout('pro');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:var(--orange);color:#000;border:1px solid transparent;text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.background='#ff8550'" onmouseout="this.style.background='var(--orange)'">Get Pro →</a>
       </div>
       <div style="background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;">
         <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px;">Day Pass</div>
         <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;"><sup style="font-size:0.9rem;vertical-align:super;">$</sup>1<sub style="font-size:0.7rem;font-family:var(--mono);color:var(--dim);font-weight:400;">.99</sub></div>
-        <div style="font-size:0.63rem;color:var(--dim);margin-bottom:18px;line-height:1.6;">Unlimited access for 24 hours.</div>
+        <div style="font-size:0.63rem;color:var(--muted);margin-bottom:18px;line-height:1.6;">Unlimited access for 24 hours.</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:0;flex:1;">
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited for 24 hours</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
-          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
-          <li style="font-size:0.65rem;color:var(--dim);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>No recurring charge</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Unlimited for 24 hours</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Files up to 200MB</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>STL + OBJ + 3MF output</li>
+          <li style="font-size:0.65rem;color:var(--text);display:flex;gap:8px;"><span style="color:var(--orange);flex-shrink:0;">✓</span>Smart decimation control</li>
+          <li style="font-size:0.65rem;color:var(--muted);display:flex;gap:8px;"><span style="color:var(--dim);flex-shrink:0;">×</span>No recurring charge</li>
         </ul>
         <a href="#" onclick="paddleCheckout('daypass');return false;" style="display:block;width:100%;font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:11px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid var(--border2);text-align:center;text-decoration:none;transition:all 0.15s;margin-top:auto;" onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">Buy day pass →</a>
       </div>
@@ -1015,7 +1015,7 @@ header {
       <p style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Why browser-based</p>
       <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">Your scans stay<br>on your device.</h2>
     </div>
-    <div class="fade-up" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
+    <div class="fade-up mobile-1col" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:48px;background:var(--border);border-radius:20px;overflow:hidden;">
       <div style="background:var(--s1);padding:32px;display:flex;gap:18px;">
         <div style="width:40px;height:40px;flex-shrink:0;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🔒</div>
         <div><div style="font-family:var(--display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">Zero uploads</div><div style="font-size:0.68rem;color:var(--muted);line-height:1.7;">Your scan files never leave your machine. Everything processes via WebAssembly inside your browser tab. No cloud, no server, no data retention.</div></div>
